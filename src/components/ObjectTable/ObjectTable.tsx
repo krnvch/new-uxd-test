@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import './ObjectTable.css';
 
 interface AttackData {
@@ -14,12 +14,32 @@ interface AttackData {
   country: { code: string; name: string };
 }
 
+interface ColumnDefinition {
+  key: string;
+  label: string;
+  width: number;
+  sortable?: boolean;
+  resizable?: boolean;
+  dataType?: 'string' | 'number' | 'date';
+}
+
+interface SortState {
+  columnKey: string | null;
+  direction: 'asc' | 'desc' | null;
+}
+
+interface ResizeState {
+  columnKey: string;
+  startX: number;
+  startWidth: number;
+}
+
 const mockData: AttackData[] = [
   {
     id: '1',
-    name: 'account-takeover in body.password',
-    categories: ['api-abuse', 'account-takeover'],
-    sources: 23,
+    name: 'SQL injection in query parameter',
+    categories: ['api-abuse', 'injection'],
+    sources: 45,
     securityInfo: [
       { label: 'CWE-495', variant: 'blue' },
       { label: 'CWE-12', variant: 'green' },
@@ -38,97 +58,97 @@ const mockData: AttackData[] = [
     categories: ['api-abuse', 'account-takeover'],
     sources: 23,
     securityInfo: [{ label: 'CWE-12', variant: 'green' }],
-    method: 'GET',
-    endpoint: '/api/v2/users/profile',
-    firstDetected: '22 Dec, 5:22:53 AM',
-    parameter: 'query.user_id',
-    country: { code: 'BE', name: 'Belgium' },
+    method: 'POST',
+    endpoint: '/api/v2/auth/login',
+    firstDetected: '15 Dec, 2025 3:10:22 PM',
+    parameter: 'body.password',
+    country: { code: 'US', name: 'United States' },
   },
   {
     id: '3',
-    name: 'account-takeover in body.password',
-    categories: ['api-abuse', 'account-takeover'],
-    sources: 23,
+    name: 'XSS vulnerability in header',
+    categories: ['xss', 'injection'],
+    sources: 12,
     securityInfo: [
       { label: 'CWE-495', variant: 'blue' },
       { label: 'CWE-4', variant: 'green' },
     ],
     method: 'GET',
-    endpoint: '/api/v2/users/profile',
-    firstDetected: '22 Dec, 5:22:53 AM',
-    parameter: 'query.user_id',
-    country: { code: 'BE', name: 'Belgium' },
+    endpoint: '/api/v1/search',
+    firstDetected: '10 Jan, 2026 8:45:12 AM',
+    parameter: 'header.x-custom',
+    country: { code: 'GB', name: 'United Kingdom' },
   },
   {
     id: '4',
-    name: 'account-takeover in body.password',
-    categories: ['api-abuse', 'account-takeover'],
-    sources: 23,
+    name: 'CSRF token bypass',
+    categories: ['csrf', 'security'],
+    sources: 8,
     securityInfo: [
       { label: 'CWE-495', variant: 'blue' },
       { label: 'CWE-12', variant: 'green' },
       { label: 'CWE-4', variant: 'blue' },
       { label: '+5', variant: 'green' },
     ],
-    method: 'GET',
-    endpoint: '/api/v2/users/profile',
-    firstDetected: '22 Dec, 5:22:53 AM',
-    parameter: 'query.user_id',
-    country: { code: 'BE', name: 'Belgium' },
+    method: 'POST',
+    endpoint: '/api/v2/users/update',
+    firstDetected: '5 Jan, 2026 2:30:45 PM',
+    parameter: 'body.csrf_token',
+    country: { code: 'FR', name: 'France' },
   },
   {
     id: '5',
-    name: 'account-takeover in body.password',
-    categories: ['api-abuse', 'account-takeover'],
-    sources: 23,
+    name: 'authentication bypass attempt',
+    categories: ['auth', 'bypass'],
+    sources: 34,
     securityInfo: [{ label: 'CWE-12', variant: 'green' }],
     method: 'GET',
-    endpoint: '/api/v2/users/profile',
-    firstDetected: '22 Dec, 5:22:53 AM',
-    parameter: 'query.user_id',
-    country: { code: 'BE', name: 'Belgium' },
+    endpoint: '/api/admin/dashboard',
+    firstDetected: '18 Dec, 2025 11:20:00 AM',
+    parameter: 'query.token',
+    country: { code: 'DE', name: 'Germany' },
   },
   {
     id: '6',
-    name: 'account-takeover in body.password',
-    categories: ['api-abuse', 'account-takeover'],
-    sources: 23,
+    name: 'path traversal in file upload',
+    categories: ['file-upload', 'traversal'],
+    sources: 56,
     securityInfo: [
       { label: 'CWE-495', variant: 'blue' },
       { label: 'CWE-4', variant: 'green' },
     ],
-    method: 'GET',
-    endpoint: '/api/v2/users/profile',
-    firstDetected: '22 Dec, 5:22:53 AM',
-    parameter: 'query.user_id',
-    country: { code: 'BE', name: 'Belgium' },
+    method: 'POST',
+    endpoint: '/api/v2/files/upload',
+    firstDetected: '1 Jan, 2026 12:00:00 AM',
+    parameter: 'body.filename',
+    country: { code: 'JP', name: 'Japan' },
   },
   {
     id: '7',
-    name: 'account-takeover in body.password',
-    categories: ['api-abuse', 'account-takeover'],
-    sources: 23,
+    name: 'command injection vulnerability',
+    categories: ['injection', 'rce'],
+    sources: 19,
     securityInfo: [{ label: 'CWE-12', variant: 'green' }],
-    method: 'GET',
-    endpoint: '/api/v2/users/profile',
-    firstDetected: '22 Dec, 5:22:53 AM',
-    parameter: 'query.user_id',
-    country: { code: 'BE', name: 'Belgium' },
+    method: 'POST',
+    endpoint: '/api/v1/tools/execute',
+    firstDetected: '28 Dec, 2025 9:15:33 PM',
+    parameter: 'body.command',
+    country: { code: 'CA', name: 'Canada' },
   },
   {
     id: '8',
-    name: 'account-takeover in body.password',
-    categories: ['api-abuse', 'account-takeover'],
-    sources: 23,
+    name: 'rate limiting bypass',
+    categories: ['api-abuse', 'dos'],
+    sources: 67,
     securityInfo: [
       { label: 'CWE-495', variant: 'blue' },
       { label: 'CWE-4', variant: 'green' },
     ],
     method: 'GET',
-    endpoint: '/api/v2/users/profile',
-    firstDetected: '22 Dec, 5:22:53 AM',
-    parameter: 'query.user_id',
-    country: { code: 'BE', name: 'Belgium' },
+    endpoint: '/api/v2/data/export',
+    firstDetected: '3 Jan, 2026 4:22:11 AM',
+    parameter: 'query.limit',
+    country: { code: 'AU', name: 'Australia' },
   },
 ];
 
@@ -143,6 +163,12 @@ const getFlagEmoji = (countryCode: string) => {
 export default function ObjectTable() {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [hoveredRowId, setHoveredRowId] = useState<string | null>(null);
+  const [sortState, setSortState] = useState<SortState>({
+    columnKey: null,
+    direction: null,
+  });
+  const [columnWidths, setColumnWidths] = useState<Record<string, number>>({});
+  const [resizeState, setResizeState] = useState<ResizeState | null>(null);
 
   const allSelected = selectedIds.size === mockData.length && mockData.length > 0;
   const someSelected = selectedIds.size > 0 && selectedIds.size < mockData.length;
@@ -173,19 +199,132 @@ export default function ObjectTable() {
     alert(`${action} action triggered for ${selectedIds.size} item(s): ${Array.from(selectedIds).join(', ')}`);
   };
 
-  const columns = useMemo(
+  // Define columns first (needed by sortedData)
+  const columns = useMemo<ColumnDefinition[]>(
     () => [
-      { key: 'checkbox', label: '', width: 32 },
-      { key: 'name', label: 'Attack name', width: 300 },
-      { key: 'sources', label: 'Sources', width: 92 },
-      { key: 'securityInfo', label: 'Security info', width: 200 },
-      { key: 'endpoint', label: 'Endpoints', width: 220 },
-      { key: 'firstDetected', label: 'First detected', width: 160 },
-      { key: 'parameter', label: 'Parameters', width: 140 },
-      { key: 'country', label: '', width: 120 },
+      { key: 'checkbox', label: '', width: 32, sortable: false, resizable: false },
+      { key: 'name', label: 'Attack name', width: 300, sortable: true, resizable: true, dataType: 'string' },
+      { key: 'sources', label: 'Sources', width: 92, sortable: true, resizable: true, dataType: 'number' },
+      { key: 'securityInfo', label: 'Security info', width: 200, sortable: false, resizable: true },
+      { key: 'endpoint', label: 'Endpoints', width: 220, sortable: true, resizable: true, dataType: 'string' },
+      { key: 'firstDetected', label: 'First detected', width: 160, sortable: true, resizable: true, dataType: 'date' },
+      { key: 'parameter', label: 'Parameters', width: 140, sortable: true, resizable: true, dataType: 'string' },
+      { key: 'country', label: '', width: 120, sortable: false, resizable: true },
     ],
     []
   );
+
+  // Initialize column widths from column definitions
+  useEffect(() => {
+    const initial: Record<string, number> = {};
+    columns.forEach((col) => (initial[col.key] = col.width));
+    setColumnWidths(initial);
+  }, [columns]);
+
+  // Handle column sorting
+  const handleSort = useCallback((columnKey: string, sortable?: boolean) => {
+    if (!sortable) return;
+
+    setSortState((prev) => {
+      if (prev.columnKey !== columnKey) {
+        return { columnKey, direction: 'asc' };
+      }
+      if (prev.direction === 'asc') {
+        return { columnKey, direction: 'desc' };
+      }
+      if (prev.direction === 'desc') {
+        return { columnKey: null, direction: null };
+      }
+      return { columnKey, direction: 'asc' };
+    });
+  }, []);
+
+  // Parse date string for sorting
+  const parseDate = (dateStr: string): number => {
+    try {
+      return new Date(dateStr).getTime();
+    } catch {
+      return 0;
+    }
+  };
+
+  // Sort data based on current sort state
+  const sortedData = useMemo(() => {
+    if (!sortState.columnKey || !sortState.direction) {
+      return mockData;
+    }
+
+    const sorted = [...mockData].sort((a, b) => {
+      const columnDef = columns.find((col) => col.key === sortState.columnKey);
+      if (!columnDef) return 0;
+
+      const key = sortState.columnKey as keyof AttackData;
+      let aVal = a[key];
+      let bVal = b[key];
+
+      // Handle different data types
+      if (columnDef.dataType === 'number') {
+        aVal = Number(aVal) || 0;
+        bVal = Number(bVal) || 0;
+      } else if (columnDef.dataType === 'date') {
+        aVal = parseDate(String(aVal));
+        bVal = parseDate(String(bVal));
+      } else if (columnDef.dataType === 'string') {
+        aVal = String(aVal).toLowerCase();
+        bVal = String(bVal).toLowerCase();
+      }
+
+      if (aVal < bVal) return sortState.direction === 'asc' ? -1 : 1;
+      if (aVal > bVal) return sortState.direction === 'asc' ? 1 : -1;
+      return 0;
+    });
+
+    return sorted;
+  }, [sortState, columns]);
+
+  // Handle resize start
+  const handleResizeStart = useCallback((e: React.MouseEvent, columnKey: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setResizeState({
+      columnKey,
+      startX: e.clientX,
+      startWidth: columnWidths[columnKey] || 0,
+    });
+  }, [columnWidths]);
+
+  // Handle resize move
+  const handleResizeMove = useCallback(
+    (e: MouseEvent) => {
+      if (!resizeState) return;
+
+      const delta = e.clientX - resizeState.startX;
+      const newWidth = Math.max(60, resizeState.startWidth + delta);
+
+      setColumnWidths((prev) => ({
+        ...prev,
+        [resizeState.columnKey]: newWidth,
+      }));
+    },
+    [resizeState]
+  );
+
+  // Handle resize end
+  const handleResizeEnd = useCallback(() => {
+    setResizeState(null);
+  }, []);
+
+  // Add global mouse event listeners for resizing
+  useEffect(() => {
+    if (resizeState) {
+      window.addEventListener('mousemove', handleResizeMove);
+      window.addEventListener('mouseup', handleResizeEnd);
+      return () => {
+        window.removeEventListener('mousemove', handleResizeMove);
+        window.removeEventListener('mouseup', handleResizeEnd);
+      };
+    }
+  }, [resizeState, handleResizeMove, handleResizeEnd]);
 
   return (
     <div className="object-table-container">
@@ -204,7 +343,11 @@ export default function ObjectTable() {
             <thead>
               <tr>
                 {columns.map((col) => (
-                  <th key={col.key} style={{ width: col.width }}>
+                  <th
+                    key={col.key}
+                    style={{ width: columnWidths[col.key] || col.width }}
+                    className={col.sortable ? 'sortable-header' : ''}
+                  >
                     {col.key === 'checkbox' ? (
                       <label className="checkbox-wrapper">
                         <input
@@ -218,9 +361,25 @@ export default function ObjectTable() {
                         <span className="checkbox-custom" />
                       </label>
                     ) : col.label ? (
-                      <div className="header-cell">
-                        <SortIcon />
-                        <span>{col.label}</span>
+                      <div className="header-cell-wrapper">
+                        <div
+                          className={`header-cell ${col.sortable ? 'clickable' : ''} ${
+                            sortState.columnKey === col.key ? 'active-sort' : ''
+                          }`}
+                          onClick={() => handleSort(col.key, col.sortable)}
+                        >
+                          <SortIcon
+                            active={sortState.columnKey === col.key}
+                            direction={sortState.columnKey === col.key ? sortState.direction : null}
+                          />
+                          <span>{col.label}</span>
+                        </div>
+                        {col.resizable && (
+                          <div
+                            className="resize-handle"
+                            onMouseDown={(e) => handleResizeStart(e, col.key)}
+                          />
+                        )}
                       </div>
                     ) : null}
                   </th>
@@ -228,7 +387,7 @@ export default function ObjectTable() {
               </tr>
             </thead>
             <tbody>
-              {mockData.map((row) => (
+              {sortedData.map((row) => (
                 <tr
                   key={row.id}
                   className={`${selectedIds.has(row.id) ? 'selected' : ''} ${hoveredRowId === row.id ? 'hovered' : ''}`}
@@ -354,11 +513,27 @@ const SettingsIcon = () => (
   </svg>
 );
 
-const SortIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M6 2.5V9.5M6 2.5L3.5 5M6 2.5L8.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-  </svg>
-);
+const SortIcon = ({ active, direction }: { active?: boolean; direction?: 'asc' | 'desc' | null }) => {
+  if (active && direction === 'asc') {
+    return (
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 2.5V9.5M6 2.5L3.5 5M6 2.5L8.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+  if (active && direction === 'desc') {
+    return (
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 9.5V2.5M6 9.5L3.5 7M6 9.5L8.5 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  }
+  return (
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M6 2.5V9.5M6 2.5L3.5 5M6 2.5L8.5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+};
 
 const ToggleIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

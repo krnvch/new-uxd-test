@@ -88,14 +88,69 @@
   width: 32px;
 }
 
+/* Sortable header hover states */
+.sortable-header {
+  position: relative;
+  transition: background-color 0.15s;
+}
+
+.sortable-header:hover {
+  background-color: #f3f4f6;
+}
+
+/* Header cell wrapper for layout */
+.header-cell-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
 .header-cell {
   display: flex;
   align-items: center;
   gap: 4px;
+  flex: 1;
+  transition: color 0.15s;
+}
+
+.header-cell.clickable {
+  cursor: pointer;
 }
 
 .header-cell svg {
+  opacity: 0.3;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+
+.header-cell.clickable:hover svg {
   opacity: 0.5;
+}
+
+.header-cell.active-sort svg {
+  opacity: 1;
+  color: #2563eb;
+}
+
+.header-cell.active-sort {
+  color: #2563eb;
+}
+
+/* Resize handle */
+.resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  cursor: col-resize;
+  z-index: 10;
+  transition: background 0.15s;
+}
+
+.resize-handle:hover {
+  background: linear-gradient(to right, transparent, #2563eb);
 }
 
 .data-table td {

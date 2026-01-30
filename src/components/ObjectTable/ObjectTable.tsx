@@ -473,17 +473,17 @@ export default function ObjectTable() {
               </button>
             </div>
             <div className="bulk-buttons">
-              <button className="bulk-btn secondary" onClick={() => handleBulkAction('Export')}>
+              <button className="bulk-btn secondary" onClick={() => handleBulkAction('Button')}>
+                Button
                 <ChevronDownIcon />
-                Export
               </button>
-              <button className="bulk-btn secondary" onClick={() => handleBulkAction('Assign')}>
+              <button className="bulk-btn secondary" onClick={() => handleBulkAction('Button')}>
+                Button
                 <ChevronDownIcon />
-                Assign
               </button>
-              <button className="bulk-btn primary" onClick={() => handleBulkAction('Resolve')}>
-                <RefreshIcon />
-                Resolve
+              <button className="bulk-btn primary" onClick={() => handleBulkAction('Button')}>
+                <CircleDashedIcon />
+                Button
               </button>
             </div>
           </div>
@@ -556,14 +556,13 @@ const ChevronDownIcon = () => (
   </svg>
 );
 
-const RefreshIcon = () => (
+const CircleDashedIcon = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
-      d="M14 8C14 11.3137 11.3137 14 8 14C4.68629 14 2 11.3137 2 8C2 4.68629 4.68629 2 8 2C10.2091 2 12.1359 3.19968 13.2 5"
+      d="M8 1.33334C8.55556 1.33334 9.1 1.4 9.62222 1.53334M8 14.6667C7.44444 14.6667 6.9 14.6 6.37778 14.4667M12.4444 3.06667C12.8667 3.46667 13.2333 3.91111 13.5333 4.4M3.55556 12.9333C3.13333 12.5333 2.76667 12.0889 2.46667 11.6M14.6667 8C14.6667 8.55556 14.6 9.1 14.4667 9.62222M1.33333 8C1.33333 7.44444 1.4 6.9 1.53333 6.37778M13.5333 11.6C13.2333 12.0889 12.8667 12.5333 12.4444 12.9333M2.46667 4.4C2.76667 3.91111 3.13333 3.46667 3.55556 3.06667"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"
     />
-    <path d="M10 5H13.5V1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );

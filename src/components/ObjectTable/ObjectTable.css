@@ -393,39 +393,45 @@
   transform: translateX(-50%);
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8px 16px;
-  background-color: #1e293b;
-  border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  min-width: 600px;
+  gap: 40px;
+  padding: 8px;
+  background-color: #1d293d;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 15px rgba(0, 0, 0, 0.1);
   z-index: 100;
 }
 
 .bulk-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 2px;
+  padding: 8px;
   color: white;
   font-size: 14px;
+  line-height: 20px;
 }
 
 .selected-count {
   font-weight: 500;
+  margin-right: 10px;
 }
 
 .bulk-info .dot {
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Geist Mono', ui-monospace, monospace;
+  font-weight: 500;
 }
 
 .link-btn {
   background: none;
   border: none;
-  color: #60a5fa;
+  color: #8ec5ff;
   cursor: pointer;
   font-size: 14px;
+  line-height: 20px;
   padding: 0;
   text-decoration: none;
+  font-weight: 400;
 }
 
 .link-btn:hover {
@@ -435,41 +441,47 @@
 /* Bulk Buttons */
 .bulk-buttons {
   display: flex;
-  gap: 12px;
+  align-items: center;
+  gap: 8px;
 }
 
 .bulk-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
   padding: 8px 16px;
-  border-radius: 6px;
+  height: 36px;
+  border-radius: 8px;
   font-size: 14px;
+  line-height: 20px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.15s;
+  transition: background-color 0.15s, opacity 0.15s;
   border: none;
 }
 
 .bulk-btn.secondary {
-  background-color: #334155;
+  background-color: transparent;
   color: white;
 }
 
 .bulk-btn.secondary:hover {
-  background-color: #475569;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .bulk-btn.primary {
-  background-color: #2563eb;
+  background-color: #ff441c;
   color: white;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .bulk-btn.primary:hover {
-  background-color: #1d4ed8;
+  background-color: #e63d19;
 }
 
 .bulk-btn svg {
   width: 16px;
   height: 16px;
+  flex-shrink: 0;
 }

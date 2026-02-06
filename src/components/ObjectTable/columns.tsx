@@ -135,7 +135,9 @@ export const columns: ColumnDef<DocumentRow>[] = [
   },
   {
     accessorKey: "reviewer",
-    header: "Reviewer",
+    header: ({ column }) => (
+      <SortableHeader column={column}>Reviewer</SortableHeader>
+    ),
     cell: ({ row }) => {
       const reviewer = row.getValue("reviewer") as string | null
       if (reviewer) {

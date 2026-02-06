@@ -65,6 +65,20 @@ The tsconfig has these strict settings — code must comply:
 - `verbatimModuleSyntax: true` — **use `import type` for types**
 - `erasableSyntaxOnly: true`
 
+## UX Researcher Agent
+
+A built-in UX Researcher agent with 5 skill commands. Persona defined in `.claude/agents/ux-researcher.md`.
+
+| Command | Skill | What it does |
+|---------|-------|-------------|
+| `/ux-audit` | Audit | Heuristic evaluation, visual/interaction/accessibility audit via Playwright |
+| `/ux-research` | Research | Competitive analysis, best practices, pattern research |
+| `/ux-discovery` | Discovery | User flow mapping, pain points, JTBD, opportunity identification |
+| `/ux-systems` | Systems Thinking | Design token audit, component consistency, pattern language, scalability |
+| `/ux-solutions` | Universal Solutions | Rule of Three solutions (minimal/balanced/comprehensive) with evaluation matrix |
+
+All commands accept optional arguments for scoping, e.g. `/ux-audit pagination component` or `/ux-research table sorting patterns`.
+
 ## Adding shadcn/ui Components
 
 ```bash

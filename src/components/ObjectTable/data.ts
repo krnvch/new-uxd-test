@@ -1,0 +1,98 @@
+export interface DocumentRow {
+  id: string
+  header: string
+  sectionType: string
+  status: "done" | "in_progress"
+  target: number
+  limit: number
+  reviewer: string | null
+}
+
+const reviewers = [
+  "Jamik Tashpulatov",
+  "Eddie Lake",
+  "Sarah Chen",
+  "Marcus Johnson",
+  "Priya Patel",
+]
+
+const sections: Pick<DocumentRow, "header" | "sectionType">[] = [
+  { header: "Cover Page", sectionType: "Cover Page" },
+  { header: "Table of contents", sectionType: "Table of Contents" },
+  { header: "Executive summary", sectionType: "Narrative" },
+  { header: "Technical approach", sectionType: "Technical Content" },
+  { header: "Design", sectionType: "Technical Content" },
+  { header: "Capabilities", sectionType: "Technical Content" },
+  { header: "Integration with existing...", sectionType: "Technical Content" },
+  { header: "Innovation and Advan...", sectionType: "Technical Content" },
+  { header: "Overview of EMR's...", sectionType: "Narrative" },
+  { header: "Advanced Algorithm...", sectionType: "Technical Content" },
+  { header: "Risk mitigation strategy", sectionType: "Narrative" },
+  { header: "Implementation timeline", sectionType: "Technical Content" },
+  { header: "Resource allocation plan", sectionType: "Technical Content" },
+  { header: "Quality assurance", sectionType: "Technical Content" },
+  { header: "Testing methodology", sectionType: "Technical Content" },
+  { header: "Compliance overview", sectionType: "Narrative" },
+  { header: "Security framework", sectionType: "Technical Content" },
+  { header: "Data management plan", sectionType: "Technical Content" },
+  { header: "Training program", sectionType: "Narrative" },
+  { header: "Support structure", sectionType: "Technical Content" },
+  { header: "Communication plan", sectionType: "Narrative" },
+  { header: "Stakeholder analysis", sectionType: "Narrative" },
+  { header: "Budget breakdown", sectionType: "Technical Content" },
+  { header: "Cost-benefit analysis", sectionType: "Technical Content" },
+  { header: "Performance metrics", sectionType: "Technical Content" },
+  { header: "Monitoring framework", sectionType: "Technical Content" },
+  { header: "Scalability plan", sectionType: "Technical Content" },
+  { header: "Disaster recovery", sectionType: "Technical Content" },
+  { header: "Vendor management", sectionType: "Narrative" },
+  { header: "Procurement strategy", sectionType: "Narrative" },
+  { header: "Regulatory compliance", sectionType: "Narrative" },
+  { header: "Environmental impact", sectionType: "Narrative" },
+  { header: "Sustainability plan", sectionType: "Narrative" },
+  { header: "Change management", sectionType: "Narrative" },
+  { header: "Governance structure", sectionType: "Technical Content" },
+  { header: "Audit procedures", sectionType: "Technical Content" },
+  { header: "Incident response plan", sectionType: "Technical Content" },
+  { header: "Business continuity", sectionType: "Narrative" },
+  { header: "Knowledge transfer", sectionType: "Narrative" },
+  { header: "Documentation standards", sectionType: "Technical Content" },
+  { header: "API integration guide", sectionType: "Technical Content" },
+  { header: "User interface design", sectionType: "Technical Content" },
+  { header: "Accessibility compliance", sectionType: "Narrative" },
+  { header: "Localization strategy", sectionType: "Narrative" },
+  { header: "Performance optimization", sectionType: "Technical Content" },
+  { header: "Load testing results", sectionType: "Technical Content" },
+  { header: "Security audit findings", sectionType: "Technical Content" },
+  { header: "Penetration test report", sectionType: "Technical Content" },
+  { header: "Compliance certification", sectionType: "Narrative" },
+  { header: "Service level agreements", sectionType: "Technical Content" },
+  { header: "Maintenance schedule", sectionType: "Technical Content" },
+  { header: "Upgrade roadmap", sectionType: "Technical Content" },
+  { header: "Deprecation plan", sectionType: "Technical Content" },
+  { header: "Migration strategy", sectionType: "Technical Content" },
+  { header: "Data migration plan", sectionType: "Technical Content" },
+  { header: "System architecture", sectionType: "Technical Content" },
+  { header: "Network topology", sectionType: "Technical Content" },
+  { header: "Infrastructure overview", sectionType: "Technical Content" },
+  { header: "Cloud deployment plan", sectionType: "Technical Content" },
+  { header: "DevOps pipeline", sectionType: "Technical Content" },
+  { header: "CI/CD configuration", sectionType: "Technical Content" },
+  { header: "Monitoring and alerting", sectionType: "Technical Content" },
+  { header: "Log management", sectionType: "Technical Content" },
+  { header: "Backup procedures", sectionType: "Technical Content" },
+  { header: "Recovery testing", sectionType: "Technical Content" },
+  { header: "Capacity planning", sectionType: "Technical Content" },
+  { header: "Appendices", sectionType: "Narrative" },
+  { header: "References", sectionType: "Table of Contents" },
+]
+
+export const mockData: DocumentRow[] = sections.map((section, i) => ({
+  id: String(i + 1),
+  header: section.header,
+  sectionType: section.sectionType,
+  status: i % 3 === 0 ? "done" : "in_progress",
+  target: [5, 10, 15, 20, 8, 12, 25, 3, 6, 18][i % 10],
+  limit: [10, 20, 30, 25, 15, 20, 35, 10, 12, 25][i % 10],
+  reviewer: i % 4 === 0 ? null : reviewers[i % reviewers.length],
+}))

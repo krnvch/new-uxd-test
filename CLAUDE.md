@@ -79,6 +79,16 @@ A built-in UX Researcher agent with 5 skill commands. Persona defined in `.claud
 
 All commands accept optional arguments for scoping, e.g. `/ux-audit pagination component` or `/ux-research table sorting patterns`.
 
+## shadcn Compliance Agent
+
+A design system compliance checker. Persona in `.claude/agents/shadcn-compliance.md`.
+
+| Command | What it does |
+|---------|-------------|
+| `/shadcn-check` | Component usage, design tokens, pattern compliance, visual verification, anti-patterns, config |
+
+Accepts optional scope: `/shadcn-check ObjectTable` or `/shadcn-check buttons`.
+
 ## Adding shadcn/ui Components
 
 ```bash

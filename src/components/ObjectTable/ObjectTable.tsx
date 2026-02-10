@@ -20,7 +20,8 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Settings, ChevronDown, CircleDashed } from "lucide-react"
+import { ChevronDown, CircleDashed } from "lucide-react"
+import { ThemeToggle } from "@/components/ThemeToggle"
 import { columns } from "./columns"
 import { mockData } from "./data"
 import { DataTableToolbar } from "./DataTableToolbar"
@@ -71,22 +72,20 @@ export default function ObjectTable() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50 font-sans">
+    <div className="flex min-h-screen bg-app-bg font-sans">
       {/* Sidebar */}
-      <aside className="w-[72px] bg-indigo-950 shrink-0" />
+      <aside className="w-[72px] bg-app-sidebar shrink-0" />
 
       {/* Main Content */}
       <main className="flex-1 p-4 px-6 flex flex-col min-w-0 relative">
         {/* Header */}
         <header className="flex items-center justify-between mb-4">
-          <h1 className="text-xl font-semibold text-gray-900">Object table</h1>
-          <Button variant="ghost" size="icon" className="text-gray-500 hover:text-gray-700">
-            <Settings className="size-5" />
-          </Button>
+          <h1 className="text-xl font-semibold text-app-heading">Object table</h1>
+          <ThemeToggle />
         </header>
 
         {/* Table Card */}
-        <div className="bg-white rounded-lg shadow-sm flex-1 overflow-hidden flex flex-col">
+        <div className="bg-card rounded-lg shadow-sm flex-1 overflow-hidden flex flex-col">
           <Tabs defaultValue="outline" className="flex-1 flex flex-col gap-0">
             <div className="flex items-center justify-between border-b px-4">
               <TabsList variant="line" className="h-10">
@@ -115,7 +114,7 @@ export default function ObjectTable() {
                     {table.getHeaderGroups().map((headerGroup) => (
                       <TableRow
                         key={headerGroup.id}
-                        className="hover:bg-transparent border-gray-200"
+                        className="hover:bg-transparent border-border"
                       >
                         {headerGroup.headers.map((header) => (
                           <TableHead
@@ -142,8 +141,8 @@ export default function ObjectTable() {
                           data-state={row.getIsSelected() && "selected"}
                           className={
                             row.getIsSelected()
-                              ? "bg-blue-50 hover:bg-blue-100"
-                              : "hover:bg-gray-50"
+                              ? "bg-row-selected hover:bg-row-selected-hover"
+                              : "hover:bg-row-hover"
                           }
                         >
                           {row.getVisibleCells().map((cell) => (
@@ -180,19 +179,19 @@ export default function ObjectTable() {
 
         {/* Bulk Actions Bar */}
         {selectedCount > 0 && (
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-10 p-2 bg-[#1d293d] rounded-2xl shadow-lg z-50">
-            <div className="flex items-center gap-0.5 px-2 text-white text-sm">
+          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-10 p-2 bg-bulk-bar-bg rounded-2xl shadow-lg z-50">
+            <div className="flex items-center gap-0.5 px-2 text-bulk-bar-text text-sm">
               <span className="font-medium mr-2.5">{selectedCount} selected</span>
-              <span className="text-white/70 font-mono font-medium">&bull;</span>
+              <span className="text-bulk-bar-text/70 font-mono font-medium">&bull;</span>
               <button
-                className="bg-transparent border-none text-[#8ec5ff] cursor-pointer text-sm p-0 hover:underline"
+                className="bg-transparent border-none text-bulk-bar-link cursor-pointer text-sm p-0 hover:underline"
                 onClick={selectAll}
               >
                 Select all
               </button>
-              <span className="text-white/70 font-mono font-medium">&bull;</span>
+              <span className="text-bulk-bar-text/70 font-mono font-medium">&bull;</span>
               <button
-                className="bg-transparent border-none text-[#8ec5ff] cursor-pointer text-sm p-0 hover:underline"
+                className="bg-transparent border-none text-bulk-bar-link cursor-pointer text-sm p-0 hover:underline"
                 onClick={clearSelection}
               >
                 Clear
@@ -201,7 +200,7 @@ export default function ObjectTable() {
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
-                className="text-white hover:bg-white/10 h-9 px-4"
+                className="text-bulk-bar-text hover:bg-bulk-bar-text/10 h-9 px-4"
                 onClick={() => handleBulkAction("Button")}
               >
                 Button
@@ -209,14 +208,14 @@ export default function ObjectTable() {
               </Button>
               <Button
                 variant="ghost"
-                className="text-white hover:bg-white/10 h-9 px-4"
+                className="text-bulk-bar-text hover:bg-bulk-bar-text/10 h-9 px-4"
                 onClick={() => handleBulkAction("Button")}
               >
                 Button
                 <ChevronDown className="size-4" />
               </Button>
               <Button
-                className="bg-[#ff441c] hover:bg-[#e63d19] text-white h-9 px-4"
+                className="bg-bulk-bar-cta hover:bg-bulk-bar-cta-hover text-bulk-bar-text h-9 px-4"
                 onClick={() => handleBulkAction("Button")}
               >
                 <CircleDashed className="size-4" />

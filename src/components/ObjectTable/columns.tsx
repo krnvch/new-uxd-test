@@ -104,7 +104,7 @@ export const columns: ColumnDef<DocumentRow>[] = [
         <div className="flex items-center gap-2">
           <span
             className={`inline-block size-2 rounded-full ${
-              status === "done" ? "bg-green-500" : "bg-yellow-500"
+              status === "done" ? "bg-status-done" : "bg-status-progress"
             }`}
           />
           <span>{status === "done" ? "Done" : "In Process"}</span>

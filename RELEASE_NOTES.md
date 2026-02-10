@@ -1,5 +1,30 @@
 # Release Notes
 
+## v0.3.0 — Dark Mode
+
+Dark mode as the default theme, with a toggle to switch between light and dark.
+
+### New
+
+- **Dark mode** — ships as the default; all surfaces, rows, and controls adapt to the dark palette
+- **Theme toggle** — Sun/Moon icon button in the header switches between light and dark
+- **Theme persistence** — choice saved to `localStorage` and restored on reload with no flash (FOUC-prevention script)
+- **13 app-specific CSS variables** — `app-bg`, `app-sidebar`, `app-heading`, `row-selected`, `row-hover`, `bulk-bar-*`, `status-done`, `status-progress` defined in `:root` / `.dark` and registered in `@theme inline`
+- **`useTheme` hook + `ThemeProvider`** — lightweight context (no extra packages) supporting `light`, `dark`, and `system` modes
+
+### Changed
+
+- Replaced all hardcoded color classes (`bg-gray-50`, `bg-white`, `text-gray-900`, `bg-[#1d293d]`, `bg-[#ff441c]`, `text-[#8ec5ff]`, etc.) with CSS-variable-based Tailwind utilities
+- Replaced non-functional Settings gear button with the theme toggle
+- Status dot colors (`bg-green-500` / `bg-yellow-500`) now use `bg-status-done` / `bg-status-progress` tokens
+
+### Files added
+
+- `src/hooks/use-theme.ts` — ThemeProvider + useTheme hook
+- `src/components/ThemeToggle.tsx` — Sun/Moon toggle button
+
+---
+
 ## v0.2.0 — Table Rebuild with TanStack + shadcn/ui
 
 Complete rebuild of the document table to match the Figma "Blocks / Dashboard-01" design using production-grade libraries.

@@ -47,6 +47,19 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-app-bg: var(--app-bg);
+  --color-app-sidebar: var(--app-sidebar);
+  --color-app-heading: var(--app-heading);
+  --color-row-selected: var(--row-selected);
+  --color-row-selected-hover: var(--row-selected-hover);
+  --color-row-hover: var(--row-hover);
+  --color-bulk-bar-bg: var(--bulk-bar-bg);
+  --color-bulk-bar-text: var(--bulk-bar-text);
+  --color-bulk-bar-link: var(--bulk-bar-link);
+  --color-bulk-bar-cta: var(--bulk-bar-cta);
+  --color-bulk-bar-cta-hover: var(--bulk-bar-cta-hover);
+  --color-status-done: var(--status-done);
+  --color-status-progress: var(--status-progress);
 }
 
 :root {
@@ -82,6 +95,19 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --app-bg: oklch(0.97 0 0);
+  --app-sidebar: oklch(0.21 0.05 277);
+  --app-heading: oklch(0.145 0 0);
+  --row-selected: oklch(0.95 0.02 250);
+  --row-selected-hover: oklch(0.92 0.03 250);
+  --row-hover: oklch(0.97 0 0);
+  --bulk-bar-bg: oklch(0.22 0.03 260);
+  --bulk-bar-text: oklch(0.985 0 0);
+  --bulk-bar-link: oklch(0.76 0.1 240);
+  --bulk-bar-cta: oklch(0.6 0.24 30);
+  --bulk-bar-cta-hover: oklch(0.55 0.22 30);
+  --status-done: oklch(0.65 0.2 145);
+  --status-progress: oklch(0.8 0.18 85);
 }
 
 .dark {
@@ -116,6 +142,19 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+  --app-bg: oklch(0.145 0 0);
+  --app-sidebar: oklch(0.18 0.04 277);
+  --app-heading: oklch(0.985 0 0);
+  --row-selected: oklch(0.22 0.03 250);
+  --row-selected-hover: oklch(0.25 0.04 250);
+  --row-hover: oklch(0.20 0 0);
+  --bulk-bar-bg: oklch(0.20 0.03 260);
+  --bulk-bar-text: oklch(0.985 0 0);
+  --bulk-bar-link: oklch(0.76 0.1 240);
+  --bulk-bar-cta: oklch(0.6 0.24 30);
+  --bulk-bar-cta-hover: oklch(0.55 0.22 30);
+  --status-done: oklch(0.65 0.2 145);
+  --status-progress: oklch(0.8 0.18 85);
 }
 
 @layer base {
